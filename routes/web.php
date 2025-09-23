@@ -6,12 +6,13 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return 'Bem-vindo, Administrador!';
-})->middleware(['auth', 'role:admin']);
+// Route::get('/', function () {
+//     return 'Bem-vindo, Administrador!';
+// })->middleware(['auth', 'role:admin']);
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function () {
-        return 'Bem-vindo, Administrador!';
-    });
-});
+// Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+//     Route::get('/', function () {
+//         return 'Bem-vindo, Administrador!';
+//     });
+// });
+Route::get('/', fn() => view('dashboard'))->name('admin.index-light');
