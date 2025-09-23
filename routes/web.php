@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/usuarios', function () {
         Route::get('/usuarios', function () {
-            return 'Gerenciamento de Usuários - Apenas para Administradores';
+
         })->name('admin.users');
 
     });

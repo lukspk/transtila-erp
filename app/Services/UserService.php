@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function create(array $data): User
+
+    public function criar(array $data): User
     {
         $user = User::create([
             'name' => $data['name'],
@@ -19,6 +20,23 @@ class UserService
         $user->roles()->attach($data['role_id']);
 
         return $user;
+    }
 
+    public function listar()
+    {
+        return User::all();
+    }
+
+    public function atualizar(User $user, array $data): bool
+    {
+        if (isset($data['senha'])) {
+            $data['senha'] = Hash::make($data['senha']);
+        }
+        return $user->update($data);
+    }
+
+    public function deletar(User $user): bool
+    {
+        return $user->delete();
     }
 }
