@@ -10,7 +10,6 @@ class UserService
 {
     public function create(array $data): User
     {
-
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],

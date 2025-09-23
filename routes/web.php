@@ -23,9 +23,14 @@ Route::middleware('auth')->group(function () {
 //     return 'Bem-vindo, Administrador!';
 // })->middleware(['auth', 'role:admin']);
 
-// Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-//     Route::get('/', function () {
-//         return 'Bem-vindo, Administrador!';
-//     });
-// });
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/usuarios', function () {
+        Route::get('/usuarios', function () {
+            return 'Gerenciamento de Usuários - Apenas para Administradores';
+        })->name('admin.users');
+
+    });
+});
+
+
 Route::get('/', fn() => view('dashboard'))->name('admin.index-light');
