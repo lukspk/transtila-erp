@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\Auth\AuthController;
+use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,6 +17,15 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');       // <-- edit
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
@@ -23,14 +33,9 @@ Route::middleware('auth')->group(function () {
 //     return 'Bem-vindo, Administrador!';
 // })->middleware(['auth', 'role:admin']);
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/usuarios', function () {
-        Route::get('/usuarios', function () {
-
-        })->name('admin.users');
-
-    });
-});
+// Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+//     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+// });
 
 
-Route::get('/', fn() => view('dashboard'))->name('admin.index-light');
+//Route::get('/', fn() => view('dashboard'))->name('admin.index-light');

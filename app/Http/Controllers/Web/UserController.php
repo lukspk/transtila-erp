@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -18,47 +19,51 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->userService->listar();
-        return view('usuarios.index', compact('users'));
+        $users = $this->userService->index();
+        $roles = Role::all();
+        return view('users.index', compact('users', 'roles'));
     }
-
     public function create()
     {
-        return view('usuarios.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
-
     public function store(Request $request)
     {
-        $request->validate([
-            'nome' => 'required|string',
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'senha' => 'required|string|min:6',
+            'password' => 'required|string|min:6',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
-        $this->userService->criar($request->all());
-        return redirect()->route('usuarios.index');
+        $this->userService->store($data);
+        return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso!');
     }
 
     public function edit(User $user)
     {
-        return view('usuarios.edit', compact('user'));
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
+
 
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'nome' => 'required|string',
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'senha' => 'nullable|string|min:6',
+            'password' => 'nullable|string|min:6',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
-        $this->userService->atualizar($user, $request->all());
-        return redirect()->route('usuarios.index');
+        $this->userService->update($user, $data);
+        return redirect()->route('users.index');
     }
 
     public function destroy(User $user)
     {
-        $this->userService->deletar($user);
-        return redirect()->route('usuarios.index');
+        $this->userService->destroy($user);
+        return redirect()->route('users.index')->with('success', 'Usuário deletado com sucesso!');
     }
 }

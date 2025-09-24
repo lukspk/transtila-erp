@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
 
-    public function criar(array $data): User
+    public function store(array $data): User
     {
         $user = User::create([
             'name' => $data['name'],
@@ -22,21 +22,25 @@ class UserService
         return $user;
     }
 
-    public function listar()
+    public function index()
     {
-        return User::all();
+        return User::with('roles')->get();
     }
 
-    public function atualizar(User $user, array $data): bool
+    public function update(User $user, array $data): bool
     {
-        if (isset($data['senha'])) {
-            $data['senha'] = Hash::make($data['senha']);
+        if (empty($data['password'])) {
+            unset($data['password']);
+        } else {
+            $data['password'] = Hash::make($data['password']);
         }
+
         return $user->update($data);
     }
 
-    public function deletar(User $user): bool
+    public function destroy(User $user): bool
     {
+        $user->roles()->detach();
         return $user->delete();
     }
 }
