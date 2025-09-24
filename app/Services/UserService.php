@@ -35,7 +35,18 @@ class UserService
             $data['password'] = Hash::make($data['password']);
         }
 
-        return $user->update($data);
+        $update = $user->update($data);
+
+        if (isset($data['role_id'])) {
+            if (is_array($data['role_id'])) {
+                $user->roles()->sync($data['role_id']);
+            } else {
+                $user->roles()->sync([$data['role_id']]);
+            }
+        }
+
+
+        return $update;
     }
 
     public function destroy(User $user): bool
