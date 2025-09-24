@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    protected $service;
+    protected $userService;
 
     public function __construct(UserService $userService)
     {
-        $this->service = $service;
+        $this->userService = $userService;
     }
 
     public function index()
     {
-        $users = $this->service->listar();
+        $users = $this->userService->listar();
         return view('usuarios.index', compact('users'));
     }
 
@@ -34,7 +35,7 @@ class UserController extends Controller
             'senha' => 'required|string|min:6',
         ]);
 
-        $this->service->criar($request->all());
+        $this->userService->criar($request->all());
         return redirect()->route('usuarios.index');
     }
 
@@ -51,13 +52,13 @@ class UserController extends Controller
             'senha' => 'nullable|string|min:6',
         ]);
 
-        $this->service->atualizar($user, $request->all());
+        $this->userService->atualizar($user, $request->all());
         return redirect()->route('usuarios.index');
     }
 
     public function destroy(User $user)
     {
-        $this->service->deletar($user);
+        $this->userService->deletar($user);
         return redirect()->route('usuarios.index');
     }
 }
