@@ -58,7 +58,7 @@ class UserController extends Controller
         ]);
 
         $this->userService->update($user, $data);
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso!');
     }
 
     public function destroy(User $user)

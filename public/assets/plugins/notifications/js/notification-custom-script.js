@@ -1,5 +1,24 @@
-  /* Default Notifications */
-  function default_noti() {
+function show_noti(type, message) {
+	const icons = {
+		success: 'bi bi-check2-circle',
+		error: 'bi bi-x-circle',
+		warning: 'bi bi-exclamation-triangle',
+		info: 'bi bi-info-circle',
+		default: null
+	};
+
+	Lobibox.notify(type, {
+		pauseDelayOnHover: true,
+		continueDelayOnInactiveTab: false,
+		position: 'top right',
+		icon: icons[type] || null,
+		msg: message
+	});
+}
+
+
+/* Default Notifications */
+function default_noti() {
 	Lobibox.notify('default', {
 		pauseDelayOnHover: true,
 		continueDelayOnInactiveTab: false,
