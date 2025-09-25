@@ -82,6 +82,7 @@
   <script src="{{ asset('assets/plugins/notifications/js/lobibox.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/notifications/js/notifications.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
+  <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
   <script>
     $(".data-attributes span").peity("donut")
   </script>
@@ -101,6 +102,7 @@
 });
   </script>
 
+  @yield('script')
 
 </body>
 

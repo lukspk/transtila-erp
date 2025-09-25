@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\Auth\AuthController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', fn() => Auth::check() ? redirect()->route('dashboard') : redirect()->route('login'));
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/{user}', [UserController::class, 'update'])->name('update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
+
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

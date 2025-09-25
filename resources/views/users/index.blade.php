@@ -37,14 +37,10 @@
                                                     class="btn btn-sm btn-info d-none">Ver</a>
                                                 <a href="{{ route('users.edit', $user->id) }}"
                                                     class="btn btn-sm btn-warning">Editar</a>
-                                                <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                                    style="display:inline"
-                                                    onsubmit="return confirm('Tem certeza que deseja deletar este usuário? Esta ação não pode ser desfeita!');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
-                                                </form>
-
+                                                @if($user->id !== auth()->user()->id)
+                                                    <button type="button" class="btn btn-sm btn-danger delete-btn"
+                                                        data-route="{{ route('users.destroy', $user->id) }}">Excluir</button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty
@@ -60,4 +56,44 @@
             </div>
         </main>
     @endauth
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('.delete-btn').click(function () {
+                var btn = $(this);
+                var route = btn.data('route');
+
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: "Essa ação não poderá ser desfeita!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: route,
+                            type: 'POST',
+                            data: { _method: 'DELETE' },
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            success: function (data) {
+                                Swal.fire('Deletado!', data.message, 'success');
+                                btn.closest('tr').remove();
+                            },
+                            error: function () {
+                                Swal.fire('Erro!', 'Algo deu errado.', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+
 @endsection

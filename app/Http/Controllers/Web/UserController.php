@@ -63,7 +63,11 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $this->userService->destroy($user);
-        return redirect()->route('users.index')->with('success', 'Usuário deletado com sucesso!');
+        $data = $this->userService->destroy($user);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuário deletado com sucesso!'
+        ]);
     }
 }
