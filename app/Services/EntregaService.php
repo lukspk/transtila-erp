@@ -32,4 +32,31 @@ class EntregaService
             return $entrega;
         });
     }
+
+    public function atualizarEntrega(Entrega $entrega, array $dadosEntrega, array $dadosMotorista)
+    {
+
+        $motorista = Motorista::firstOrCreate(
+            ['cpf' => $dadosMotorista['cpf']],
+            $dadosMotorista
+        );
+
+        $entrega->update(array_merge($dadosEntrega, [
+            'motorista_id' => $motorista->id
+        ]));
+
+        return $entrega;
+    }
+
+    public function deletarEntrega(Entrega $entrega)
+    {
+        return $entrega->delete();
+    }
+
+    public function obterEntrega(Entrega $entrega)
+    {
+        return $entrega->load('motorista');
+    }
+
+
 }

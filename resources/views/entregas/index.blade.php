@@ -32,9 +32,10 @@
                                             <td>{{ $entrega->motorista->nome ?? '-' }}</td>
                                             <td>{{ $entrega->modelo }} / {{ $entrega->serie }} / {{ $entrega->numero }}</td>
                                             <td>{{ $entrega->chave_acesso }}</td>
-                                            <td>{{ $entrega->data_hora_emissao ? $entrega->data_hora_emissao->format('d/m/Y H:i') : '-' }}</td>
+                                            <td>{{ $entrega->data_hora_emissao ? $entrega->data_hora_emissao->format('d/m/Y H:i') : '-' }}
+                                            </td>
                                             <td>
-                                                <a href="{{ route('entregas.create', $entrega->id) }}"
+                                                <a href="{{ route('entregas.show', $entrega->id) }}"
                                                     class="btn btn-sm btn-info">Ver</a>
                                                 <a href="{{ route('entregas.edit', $entrega->id) }}"
                                                     class="btn btn-sm btn-warning">Editar</a>
@@ -60,39 +61,48 @@
 @endsection
 
 @section('script')
-<script>
-$(document).ready(function () {
-    $('.delete-btn').click(function () {
-        var btn = $(this);
-        var route = btn.data('route');
+    <script>
+        $(document).ready(function () {
+            $('.delete-btn').click(function () {
+                var btn = $(this);
+                var route = btn.data('route');
 
-        Swal.fire({
-            title: 'Tem certeza?',
-            text: "Essa ação não poderá ser desfeita!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sim, excluir!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: route,
-                    type: 'POST',
-                    data: { _method: 'DELETE' },
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                    success: function (data) {
-                        Swal.fire('Deletado!', data.message, 'success');
-                        btn.closest('tr').remove();
-                    },
-                    error: function () {
-                        Swal.fire('Erro!', 'Algo deu errado.', 'error');
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: "Essa ação não poderá ser desfeita!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: route,
+                            type: 'POST',
+                            data: { _method: 'DELETE' },
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Deletado!',
+                                    text: data.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+
+                            },
+                            error: function () {
+                                Swal.fire('Erro!', 'Algo deu errado.', 'error');
+                            }
+                        });
                     }
                 });
-            }
+            });
         });
-    });
-});
-</script>
+    </script>
 @endsection

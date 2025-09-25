@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('entregas')->name('entregas.')->middleware(['role:administrador'])->group(function () {
         Route::get('/', [EntregaController::class, 'index'])->name('index');
         Route::get('/create', [EntregaController::class, 'create'])->name('create');
+        Route::get('/{entrega}', [EntregaController::class, 'show'])->name('show');
         Route::post('/', [EntregaController::class, 'store'])->name('store');
         Route::get('/{entrega}/edit', [EntregaController::class, 'edit'])->name('edit');
         Route::put('/{entrega}', [EntregaController::class, 'update'])->name('update');
