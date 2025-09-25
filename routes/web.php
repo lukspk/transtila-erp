@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\Auth\AuthController;
+use App\Http\Controllers\Web\EntregaController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
+    Route::prefix('entregas')->name('entregas.')->middleware(['role:administrador'])->group(function () {
+        Route::get('/', [EntregaController::class, 'index'])->name('index');
+        Route::get('/create', [EntregaController::class, 'create'])->name('create');
+        Route::post('/', [EntregaController::class, 'store'])->name('store');
+        Route::get('/{entrega}/edit', [EntregaController::class, 'edit'])->name('edit');
+        Route::put('/{entrega}', [EntregaController::class, 'update'])->name('update');
+        Route::delete('/{entrega}', [EntregaController::class, 'destroy'])->name('destroy');
+    });
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

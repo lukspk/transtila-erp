@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Entrega extends Model
+{
+    use HasFactory;
+
+    protected $guarded = [];
+
+    protected $casts = [
+        'data_hora_emissao' => 'datetime',
+    ];
+    public function motorista()
+    {
+        return $this->belongsTo(Motorista::class);
+    }
+
+}

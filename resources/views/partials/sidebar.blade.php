@@ -29,6 +29,13 @@
             <div class="menu-title">Usuários</div>
           </a>
         </li>
+        <li>
+          <a href="{{ route('entregas.index')  }}">
+            <div class="parent-icon"><i class="material-icons-outlined">directions_car</i>
+            </div>
+            <div class="menu-title">Entregas</div>
+          </a>
+        </li>
       </ul>
       <!--end navigation-->
     </div>
