@@ -4,17 +4,23 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Entrega;
+use App\Services\ChatPdfService;
 use App\Services\EntregaService;
+use App\Services\GeminiPdfExtractorService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class EntregaController extends Controller
 {
     protected $entregaService;
+    protected $chatPdfService;
 
-    public function __construct(EntregaService $entregaService)
+
+    public function __construct(EntregaService $entregaService, ChatPdfService $chatPdfService)
     {
         $this->entregaService = $entregaService;
+        $this->chatPdfService = $chatPdfService;
     }
     public function index()
     {
@@ -148,5 +154,85 @@ class EntregaController extends Controller
 
         return view('entregas.show', compact('entrega'));
     }
+
+
+
+    public function showUploadForm()
+    {
+        return view('entregas.upload');
+    }
+
+
+    public function processarUpload(Request $request)
+    {
+        $request->validate([
+            'pdf_file' => 'required|file|mimes:pdf|max:10240',
+        ]);
+
+        $uploadedFile = $request->file('pdf_file');
+
+        try {
+            // Extrai dados do PDF via ChatPDF
+            $dados = $this->chatPdfService->extractDamdfDataFromFile($uploadedFile);
+
+            Log::info('Dados recebidos', [
+                'Dados:' => $dados
+            ]);
+
+            // Mapear campos do PDF para o banco
+            $dadosMotorista = [
+                'nome' => $dados['motorista']['nome'] ?? null,
+                'cpf' => $dados['motorista']['cpf'] ?? null,
+                'rntrc' => $dados['motorista']['rntrc'] ?? null,
+                'user_id' => null,
+            ];
+
+            $dadosEntrega = [
+                'modelo' => $dados['modelo'] ?? null,
+                'serie' => $dados['serie'] ?? null,
+                'numero' => $dados['numero'] ?? null,
+                'chave_acesso' => $dados['chave_acesso'] ?? null,
+                'data_hora_emissao' => $dados['data_hora_emissao'] ?? null,
+                'protocolo_autorizacao' => $dados['protocolo_autorizacao'] ?? null,
+                'modal' => $dados['modal'] ?? null,
+                'uf_carregamento' => $dados['uf_carregamento'] ?? null,
+                'uf_descarregamento' => $dados['uf_descarregamento'] ?? null,
+                'qtd_cte' => $dados['qtd_cte'] ?? null,
+                'qtd_nfe' => $dados['qtd_nfe'] ?? null,
+                'peso_total_kg' => $dados['peso_total_kg'] ?? null,
+                'valor_total_carga' => $dados['valor_total_carga'] ?? null,
+                'emitente_nome' => $dados['emitente']['nome'] ?? null,
+                'emitente_cnpj' => $dados['emitente']['cnpj'] ?? null,
+                'emitente_ie' => $dados['emitente']['ie'] ?? null,
+                'emitente_rntrc' => $dados['emitente']['rntrc'] ?? null,
+                'emitente_logradouro' => $dados['emitente']['logradouro'] ?? null,
+                'emitente_numero_logradouro' => $dados['emitente']['numero_logradouro'] ?? null,
+                'emitente_bairro' => $dados['emitente']['bairro'] ?? null,
+                'emitente_municipio' => $dados['emitente']['municipio'] ?? null,
+                'emitente_uf' => $dados['emitente']['uf'] ?? null,
+                'emitente_cep' => $dados['emitente']['cep'] ?? null,
+                'veiculo_placa_principal' => $dados['veiculos'][0]['placa'] ?? null,
+                'veiculo_rntrc_principal' => $dados['veiculos'][0]['rntrc'] ?? null,
+                'veiculo_placa_secundaria' => $dados['veiculos'][1]['placa'] ?? null,
+                'veiculo_rntrc_secundario' => $dados['veiculos'][1]['rntrc'] ?? null,
+                'seguro_responsavel_cnpj' => $dados['seguro']['responsavel_cnpj'] ?? null,
+                'seguro_apolice' => $dados['seguro']['apolice'] ?? null,
+                'seguro_averbacao' => $dados['seguro']['averbacao'] ?? null,
+                'ciot_responsavel_cnpj' => $dados['ciot']['responsavel_cnpj'] ?? null,
+                'ciot_numero' => $dados['ciot']['numero'] ?? null,
+                'observacoes' => $dados['observacoes'] ?? null,
+            ];
+
+            // Salvar no banco
+            $this->entregaService->criarEntrega($dadosEntrega, $dadosMotorista);
+
+            return redirect()->route('entregas.index')->with('success', 'Entrega criada com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao processar PDF: ' . $e->getMessage());
+        }
+    }
+
+
 
 }

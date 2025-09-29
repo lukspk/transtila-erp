@@ -13,10 +13,10 @@ return new class extends Migration {
         Schema::create('entregas', function (Blueprint $table) {
             $table->id();
 
-            $table->string('modelo');
-            $table->integer('serie');
-            $table->integer('numero');
-            $table->string('chave_acesso', 44)->unique();
+            $table->string('modelo'); // ok
+            $table->string('serie'); // antes era integer
+            $table->string('numero'); // antes era integer
+            $table->string('chave_acesso', 60)->unique();
             $table->timestamp('data_hora_emissao');
             $table->string('protocolo_autorizacao')->nullable();
             $table->string('modal');
@@ -37,7 +37,8 @@ return new class extends Migration {
             $table->string('emitente_bairro');
             $table->string('emitente_municipio');
             $table->string('emitente_uf', 2);
-            $table->string('emitente_cep', 9);
+            $table->string('emitente_cep', 12);
+
 
             // Veículo
             $table->string('veiculo_placa_principal', 7);

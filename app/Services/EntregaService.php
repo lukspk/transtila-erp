@@ -6,6 +6,8 @@ use App\Models\Entrega;
 use App\Models\Motorista;
 use Illuminate\Support\Facades\DB;
 
+
+
 class EntregaService
 {
 

@@ -10,6 +10,9 @@
                     <a href="{{ route('entregas.create') }}" class="btn btn-primary px-4">
                         Nova Entrega
                     </a>
+                    <a href="{{ route('entregas.upload.create') }}" class="btn btn-primary px-4">
+                        Nova Entrega
+                    </a>
                 </div>
                 <div class="row">
                     <div class="card">

@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/{entrega}/edit', [EntregaController::class, 'edit'])->name('edit');
         Route::put('/{entrega}', [EntregaController::class, 'update'])->name('update');
         Route::delete('/{entrega}', [EntregaController::class, 'destroy'])->name('destroy');
+        // Adiciona estas duas linhas junto às tuas outras rotas de entrega
+        Route::get('/upload/create', [EntregaController::class, 'showUploadForm'])->name('upload.create');
+        Route::post('/upload', [EntregaController::class, 'processarUpload'])->name('upload');
     });
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
