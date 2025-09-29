@@ -21,13 +21,13 @@
                     class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center border-top border-4 border-primary border-gradient-1">
                     <div class="card rounded-0 m-3 mb-0 border-0 shadow-none bg-none">
                         <div class="card-body p-sm-5">
-                            <img src="{{ asset('assets/images/logo1.png') }}" class="mb-4" width="145" alt="">
-                            <h4 class="fw-bold">Get Started Now</h4>
-                            <p class="mb-0">Enter your credentials to login your account</p>
+                            {{-- <img src="{{ asset('assets/images/logo1.png') }}" class="mb-4" width="145" alt=""> --}}
+                            <h4 class="fw-bold">Bem vindo</h4>
+                            <p class="mb-0">Digite suas credenciais para acessar sua conta</p>
 
                             <div class="separator section-padding my-4">
                                 <div class="line"></div>
-                                <p class="mb-0 fw-bold">OR</p>
+                                {{-- <p class="mb-0 fw-bold">OR</p> --}}
                                 <div class="line"></div>
                             </div>
 
@@ -38,17 +38,17 @@
                                     <div class="col-12">
                                         <label for="inputEmailAddress" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="inputEmailAddress" name="email"
-                                            value="{{ old('email') }}" placeholder="jhon@example.com" required>
+                                            value="{{ old('email') }}" placeholder="email@email.com" required>
                                         @error('email')
                                             <div class="text-danger mt-1" style="font-size: 0.875em;">{{ $message }}</div>
                                         @enderror
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="inputChoosePassword" class="form-label">Password</label>
+                                        <label for="inputChoosePassword" class="form-label">Senha</label>
                                         <div class="input-group" id="show_hide_password">
                                             <input type="password" class="form-control" id="inputChoosePassword"
-                                                name="password" placeholder="Enter Password" required>
+                                                name="password" placeholder="Digite sua senha" required>
                                             <a href="javascript:;" class="input-group-text bg-transparent"><i
                                                     class="bi bi-eye-slash-fill"></i></a>
                                         </div>
@@ -58,17 +58,17 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
                                                 name="remember">
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">Lembrar Me</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6 text-end">
-                                        <a href="#">Forgot Password ?</a>
+                                        <a href="#">Esqueceu sua senha?</a>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="d-grid">
-                                            <button type="submit" class="btn btn-grd-primary">Login</button>
+                                            <button type="submit" class="btn btn-grd-primary" style="color: white">Login</button>
                                         </div>
                                     </div>
 

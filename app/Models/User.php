@@ -54,8 +54,8 @@ class User extends Authenticatable
 
     public function hasRole(string $roleName): bool
     {
-
-        return $this->roles->contains('name', $roleName);
+        return $this->roles->contains(function ($role) use ($roleName) {
+            return strtolower($role->name) === strtolower($roleName);
+        });
     }
-
 }

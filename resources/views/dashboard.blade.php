@@ -18,7 +18,7 @@
           </div>
           <div class="ms-auto">
             <div class="btn-group">
-              <button type="button" class="btn btn-outline-primary">Settings</button>
+              <button type="button" class="btn btn-outline-primary">Configurações</button>
               <button type="button" class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
                 data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
               </button>
@@ -52,7 +52,7 @@
                         <h4 class="mb-1 fw-semibold d-flex align-content-center">$65.4K<i
                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                         </h4>
-                        <p class="mb-3">Today's Sales</p>
+                        <p class="mb-3">Entregas do Dia</p>
                         <div class="progress mb-0" style="height:5px;">
                           <div class="progress-bar bg-grd-success" role="progressbar" style="width: 60%" aria-valuenow="25"
                             aria-valuemin="0" aria-valuemax="100"></div>
@@ -63,7 +63,7 @@
                         <h4 class="mb-1 fw-semibold d-flex align-content-center">78.4%<i
                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                         </h4>
-                        <p class="mb-3">Growth Rate</p>
+                        <p class="mb-3">Taxa de Crescimento</p>
                         <div class="progress mb-0" style="height:5px;">
                           <div class="progress-bar bg-grd-danger" role="progressbar" style="width: 60%" aria-valuenow="25"
                             aria-valuemin="0" aria-valuemax="100"></div>
@@ -86,7 +86,7 @@
                 <div class="d-flex align-items-start justify-content-between mb-1">
                   <div class="">
                     <h5 class="mb-0">42.5K</h5>
-                    <p class="mb-0">Active Users</p>
+                    <p class="mb-0">Motoristas Ativos</p>
                   </div>
                   <div class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle-nocaret options dropdown-toggle"
@@ -104,7 +104,7 @@
                   <div id="chart1"></div>
                 </div>
                 <div class="text-center">
-                  <p class="mb-0 font-12">24K users increased from last month</p>
+                  <p class="mb-0 font-12">24K Motoristas Parceiros o mês passado</p>
                 </div>
               </div>
             </div>
@@ -115,7 +115,7 @@
                 <div class="d-flex align-items-start justify-content-between mb-3">
                   <div class="">
                     <h5 class="mb-0">97.4K</h5>
-                    <p class="mb-0">Total Users</p>
+                    <p class="mb-0">Total Motoristas</p>
                   </div>
                   <div class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle-nocaret options dropdown-toggle"
@@ -133,7 +133,7 @@
                   <div id="chart2"></div>
                 </div>
                 <div class="text-center">
-                  <p class="mb-0 font-12"><span class="text-success me-1">12.5%</span> from last month</p>
+                  {{-- <p class="mb-0 font-12"><span class="text-success me-1">12.5%</span> from last month</p> --}}
                 </div>
               </div>
             </div>

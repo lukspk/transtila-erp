@@ -34,9 +34,9 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('users.index', $user->id) }}"
-                                                    class="btn btn-sm btn-info d-none">Ver</a>
+                                                    class="btn btn-sm btn-primary d-none">Ver</a>
                                                 <a href="{{ route('users.edit', $user->id) }}"
-                                                    class="btn btn-sm btn-warning">Editar</a>
+                                                    class="btn btn-sm btn-primary">Editar</a>
                                                 @if($user->id !== auth()->user()->id)
                                                     <button type="button" class="btn btn-sm btn-danger delete-btn"
                                                         data-route="{{ route('users.destroy', $user->id) }}">Excluir</button>

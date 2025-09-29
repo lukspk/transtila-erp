@@ -56,9 +56,9 @@
                                 </select>
                             </div>
 
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-danger px-4">Atualizar</button>
-                                <a href="{{ route('users.index') }}" class="btn btn-secondary px-4">Cancelar</a>
+                            <div class="col-12 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary px-4 me-2">Atualizar</button>
+                                <a href="{{ route('users.index') }}" class="btn btn-secondary px-4">Voltar</a>
                             </div>
                         </form>
                     </div>
