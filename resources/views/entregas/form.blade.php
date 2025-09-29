@@ -6,20 +6,12 @@
 @section('content')
     <main class="main-wrapper">
         <div class="main-content">
-            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Entregas</div>
-                <div class="ps-3">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="{{ route('entregas.index') }}"><i
-                                        class="bx bx-home-alt"></i></a></li>
-                            {{-- Breadcrumb dinâmico --}}
-                            <li class="breadcrumb-item active" aria-current="page">
-                                {{ isset($entrega) ? 'Editar Entrega' : 'Nova Entrega' }}
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Entregas</h4>
+                <a href="{{ route('entregas.upload.create') }}"
+                    class="btn btn-primary px-4 {{ isset($entrega) ? 'd-none' : '' }}">
+                    Importar PDF
+                </a>
             </div>
             <div class="row">
                 <div class="col-12 col-lg-8">
