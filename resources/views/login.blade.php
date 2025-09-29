@@ -68,7 +68,8 @@
 
                                     <div class="col-12">
                                         <div class="d-grid">
-                                            <button type="submit" class="btn btn-grd-primary" style="color: white">Login</button>
+                                            <button type="submit" class="btn btn-grd-primary"
+                                                style="color: white">Entrar</button>
                                         </div>
                                     </div>
 

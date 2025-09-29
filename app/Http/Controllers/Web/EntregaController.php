@@ -24,7 +24,7 @@ class EntregaController extends Controller
 
     public function create()
     {
-        return view('entregas.create');
+        return view('entregas.form');
     }
 
     /**
@@ -83,7 +83,7 @@ class EntregaController extends Controller
 
     public function edit(Entrega $entrega)
     {
-        return view('entregas.edit', compact('entrega'));
+        return view('entregas.form', compact('entrega'));
     }
 
     public function update(Request $request, Entrega $entrega)

@@ -26,7 +26,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('users.create', compact('roles'));
+        return view('users.form', compact('roles'));
     }
     public function store(Request $request)
     {
@@ -44,7 +44,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        return view('users.form', compact('user', 'roles'));
     }
 
 
