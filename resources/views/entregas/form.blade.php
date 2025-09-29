@@ -250,9 +250,10 @@
                                 </div>
 
                                 <div class="col-12 d-flex align-items-center">
-                                    <button type="reset" class="btn btn-outline-danger px-4 me-2">Descartar</button>
+                                    <a href="{{ route('entregas.index') }}"
+                                        class="btn btn-outline-secondary px-4 me-2">Voltar</a>
                                     <button type="submit"
-                                        class="btn btn-primary px-4">{{ isset($entrega) ? 'Atualizar Entrega' : 'Salvar Entrega' }}</button>
+                                        class="btn btn-{{ isset($entrega) ? 'primary' : 'success' }} px-4">{{ isset($entrega) ? 'Atualizar' : 'Adicionar' }}</button>
                                 </div>
 
                             </form>

@@ -65,10 +65,10 @@
                             </div>
 
                             <div class="col-12 d-flex align-items-center">
-                                <button type="submit" class="btn btn-{{ $isEdit ? 'primary' : 'success' }} px-4 me-2">
-                                    {{ $isEdit ? 'Atualizar' : 'Salvar' }}
+                                <a href="{{ route('users.index') }}" class="btn btn-secondary px-4 me-2">Voltar</a>
+                                <button type="submit" class="btn btn-{{ $isEdit ? 'primary' : 'success' }} px-4">
+                                    {{ $isEdit ? 'Atualizar' : 'Adicionar' }}
                                 </button>
-                                <a href="{{ route('users.index') }}" class="btn btn-secondary px-4">Voltar</a>
                             </div>
                         </form>
 
