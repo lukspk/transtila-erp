@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\Auth\AuthController;
+use App\Http\Controllers\Web\CheckinController;
 use App\Http\Controllers\Web\EntregaController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/upload', [EntregaController::class, 'processarUpload'])->name('upload');
     });
 
+
+    Route::get('/t/{entregaHash}/{motoristaHash}', [CheckinController::class, 'showCheckinPage'])->name('checkin.show');
+
+    Route::post('/checkin', [CheckinController::class, 'storeCheckin'])->name('checkin.store');
+
+
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 });
 
 // Route::get('/', function () {

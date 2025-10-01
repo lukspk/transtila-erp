@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Entrega;
 use App\Services\ChatPdfService;
+use App\Services\CheckinService;
 use App\Services\EntregaService;
 use App\Services\GeminiPdfExtractorService;
 use Illuminate\Http\Request;
@@ -16,11 +17,15 @@ class EntregaController extends Controller
     protected $entregaService;
     protected $chatPdfService;
 
+    protected $checkinService;
 
-    public function __construct(EntregaService $entregaService, ChatPdfService $chatPdfService)
+
+
+    public function __construct(EntregaService $entregaService, ChatPdfService $chatPdfService, CheckinService $checkinService)
     {
         $this->entregaService = $entregaService;
         $this->chatPdfService = $chatPdfService;
+        $this->checkinService = $checkinService;
     }
     public function index()
     {
@@ -148,12 +153,12 @@ class EntregaController extends Controller
         return response()->json(['message' => 'Entrega deletada com sucesso!']);
     }
 
-    public function show(Entrega $entrega)
-    {
-        $entrega->load('motorista');
+    // public function show(Entrega $entrega)
+    // {
+    //     $entrega->load('motorista');
 
-        return view('entregas.show', compact('entrega'));
-    }
+    //     return view('entregas.show', compact('entrega'));
+    // }
 
 
 
@@ -234,5 +239,17 @@ class EntregaController extends Controller
     }
 
 
+    public function show(Entrega $entrega)
+    {
 
+        $entrega->load('motorista', 'checkins');
+
+        $checkinLink = null;
+
+        if ($entrega->motorista) {
+            $checkinLink = $this->checkinService->generateCheckinLink($entrega, $entrega->motorista);
+        }
+
+        return view('entregas.show', compact('entrega', 'checkinLink'));
+    }
 }

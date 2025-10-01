@@ -20,4 +20,9 @@ class Motorista extends Model
     {
         return $this->hasMany(Entrega::class);
     }
+
+    public function checkins()
+    {
+        return $this->hasMany(Checkin::class)->orderBy('created_at', 'desc');
+    }
 }

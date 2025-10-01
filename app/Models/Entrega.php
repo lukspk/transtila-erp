@@ -19,4 +19,9 @@ class Entrega extends Model
         return $this->belongsTo(Motorista::class);
     }
 
+    public function checkins()
+    {
+        return $this->hasMany(Checkin::class)->orderBy('created_at', 'desc');
+    }
+
 }
