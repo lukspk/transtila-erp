@@ -4,10 +4,24 @@
 @section('content')
     <main class="main-wrapper">
         <div class="main-content">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4>Entrega | Importar PDF</h4>
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Entregas</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="{{ route('entregas.index') }}"><i
+                                        class="bx bx-home-alt"></i></a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Importar PDF</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <a href="{{ route('entregas.create') }}" class="btn btn-primary">Voltar</a>
+                </div>
             </div>
-            <div class="row">
+            <!--end breadcrumb-->
+            <div class="row justify-content-center">
                 <div class="col-12 col-lg-6">
                     <div class="card">
                         <div class="card-body">
@@ -32,6 +46,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 @endsection
