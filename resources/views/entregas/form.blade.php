@@ -33,8 +33,8 @@
                                 <div class="col">
                                     <ul class="nav nav-tabs nav-primary" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome"
-                                                role="tab" aria-selected="true">
+                                            <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab"
+                                                aria-selected="true">
                                                 <div class="d-flex align-items-center">
                                                     <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i>
                                                     </div>
@@ -54,8 +54,8 @@
                                         </li>
                                         @if (isset($entrega))
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link" data-bs-toggle="tab" href="#primarycontact"
-                                                    role="tab" aria-selected="false">
+                                                <a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab"
+                                                    aria-selected="false">
                                                     <div class="d-flex align-items-center">
                                                         <div class="tab-icon"><i class='bi bi-headset me-1 fs-6'></i>
                                                         </div>
@@ -97,8 +97,8 @@
                                                             value="{{ $entrega->data_hora_emissao ?? '' }}">
                                                     </div>
                                                     <div class="col-12 col-lg-6">
-                                                        <input type="text" name="protocolo_autorizacao"
-                                                            class="form-control" placeholder="Protocolo de Autorização"
+                                                        <input type="text" name="protocolo_autorizacao" class="form-control"
+                                                            placeholder="Protocolo de Autorização"
                                                             value="{{ $entrega->protocolo_autorizacao ?? '' }}">
                                                     </div>
                                                     <div class="col-12 col-lg-6">
@@ -111,9 +111,8 @@
                                                             value="{{ $entrega->uf_carregamento ?? '' }}">
                                                     </div>
                                                     <div class="col-6 col-lg-3">
-                                                        <input type="text" name="uf_descarregamento"
-                                                            class="form-control" placeholder="UF Descarregamento"
-                                                            maxlength="2"
+                                                        <input type="text" name="uf_descarregamento" class="form-control"
+                                                            placeholder="UF Descarregamento" maxlength="2"
                                                             value="{{ $entrega->uf_descarregamento ?? '' }}">
                                                     </div>
                                                     <div class="col-6 col-lg-3">
@@ -179,9 +178,8 @@
                                                             value="{{ $entrega->emitente_bairro ?? '' }}">
                                                     </div>
                                                     <div class="col-12 col-lg-6">
-                                                        <input type="text" id="emitente_municipio"
-                                                            name="emitente_municipio" class="form-control"
-                                                            placeholder="Município" required
+                                                        <input type="text" id="emitente_municipio" name="emitente_municipio"
+                                                            class="form-control" placeholder="Município" required
                                                             value="{{ $entrega->emitente_municipio ?? '' }}">
                                                     </div>
                                                     <div class="col-12 col-lg-3">
@@ -240,8 +238,8 @@
                                                             value="{{ $entrega->seguro_apolice ?? '' }}">
                                                     </div>
                                                     <div class="col-12 col-lg-4">
-                                                        <input type="text" name="seguro_averbacao"
-                                                            class="form-control" placeholder="Averbação"
+                                                        <input type="text" name="seguro_averbacao" class="form-control"
+                                                            placeholder="Averbação"
                                                             value="{{ $entrega->seguro_averbacao ?? '' }}">
                                                     </div>
                                                 </div>
@@ -252,8 +250,8 @@
                                                 <h5 class="mb-3">CIOT</h5>
                                                 <div class="row g-3">
                                                     <div class="col-12 col-lg-6">
-                                                        <input type="text" name="ciot_responsavel_cnpj"
-                                                            class="form-control" placeholder="CNPJ Responsável"
+                                                        <input type="text" name="ciot_responsavel_cnpj" class="form-control"
+                                                            placeholder="CNPJ Responsável"
                                                             value="{{ $entrega->ciot_responsavel_cnpj ?? '' }}">
                                                     </div>
                                                     <div class="col-12 col-lg-6">
@@ -267,7 +265,8 @@
                                             {{-- OBSERVAÇÕES --}}
                                             <div class="mb-4">
                                                 <h5 class="mb-3">Observações</h5>
-                                                <textarea name="observacoes" class="form-control" rows="3" placeholder="Digite observações">{{ $entrega->observacoes ?? '' }}</textarea>
+                                                <textarea name="observacoes" class="form-control" rows="3"
+                                                    placeholder="Digite observações">{{ $entrega->observacoes ?? '' }}</textarea>
                                             </div>
 
                                         </div>
@@ -295,16 +294,41 @@
                                         </div>
                                         @if (isset($entrega))
                                             <div class="tab-pane fade" id="primarycontact" role="tabpanel">
-                                                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out
-                                                    mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade.
-                                                    Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard
-                                                    locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR
-                                                    banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg
-                                                    banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
-                                                    retro mlkshk vice blog. Scenester cred you probably haven't heard of
-                                                    them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth
-                                                    chambray yr.</p>
+
+                                                <table class="table mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Nome</th>
+                                                            <th scope="col">Valor</th>
+                                                            <th scope="col" class="text-end">Ações</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Combustível</td>
+                                                            <td>R$ 1.200,00</td>
+                                                            <td class="text-end">
+                                                                <button class="btn btn-sm btn-primary">Editar</button>
+                                                                <button class="btn btn-sm btn-danger">Excluir</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Pedágio</td>
+                                                            <td>R$ 180,00</td>
+                                                            <td class="text-end">
+                                                                <button class="btn btn-sm btn-primary">Editar</button>
+                                                                <button class="btn btn-sm btn-danger">Excluir</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+
                                             </div>
+                                            <br>
                                         @endif
                                         <div class="col-12 d-flex align-items-center">
                                             <a href="{{ route('entregas.index') }}"
@@ -313,66 +337,67 @@
                                                 class="btn btn-{{ isset($entrega) ? 'primary' : 'success' }} px-4">{{ isset($entrega) ? 'Atualizar' : 'Adicionar' }}</button>
                                         </div>
                                     </div>
-                                    {{-- </div>
-                                    </div> --}}
+                                    {{--
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
-                                {{-- DADOS DO MOTORISTA --}}
-
-
-
-                                {{-- DADOS DA ENTREGA --}}
-
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12 col-lg-4">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="mb-3">Organização</h5>
-                            <div class="mb-3">
-                                <label class="form-label">Categoria</label>
-                                <select class="form-select" name="categoria">
-                                    <option value="0" @if (isset($entrega) && $entrega->categoria == 0) selected @endif>Frete
-                                    </option>
-                                    <option value="1" @if (isset($entrega) && $entrega->categoria == 1) selected @endif>Carga
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tags</label>
-                                <input type="text" class="form-control" name="tags" placeholder="Digite tags"
-                                    value="{{ $entrega->tags ?? '' }}">
-                            </div>
-                        </div>
+                        </div> --}}
                     </div>
 
-                    {{-- <div class="card">
-                        <div class="card-body">
-                            <h5 class="mb-3">Ações</h5>
-                            <div class="d-flex flex-column gap-2">
-                                <button type="button" class="btn btn-outline-danger">Descartar</button>
-                                <button type="submit" form="formEntrega" class="btn btn-outline-success">Salvar
-                                    Rascunho</button>
-                                <button type="submit" class="btn btn-outline-primary">Publicar</button>
-                            </div>
-                        </div>
-                    </div> --}}
+
+
+
+
+
+
+
+
+
+
+                    {{-- DADOS DO MOTORISTA --}}
+
+
+
+                    {{-- DADOS DA ENTREGA --}}
+
+
+                    </form>
                 </div>
             </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="mb-3">Organização</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Categoria</label>
+                        <select class="form-select" name="categoria">
+                            <option value="0" @if (isset($entrega) && $entrega->categoria == 0) selected @endif>Frete
+                            </option>
+                            <option value="1" @if (isset($entrega) && $entrega->categoria == 1) selected @endif>Carga
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tags</label>
+                        <input type="text" class="form-control" name="tags" placeholder="Digite tags"
+                            value="{{ $entrega->tags ?? '' }}">
+                    </div>
+                </div>
+            </div>
+
+            {{-- <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Ações</h5>
+                    <div class="d-flex flex-column gap-2">
+                        <button type="button" class="btn btn-outline-danger">Descartar</button>
+                        <button type="submit" form="formEntrega" class="btn btn-outline-success">Salvar
+                            Rascunho</button>
+                        <button type="submit" class="btn btn-outline-primary">Publicar</button>
+                    </div>
+                </div>
+            </div> --}}
+        </div>
+        </div>
         </div>
     </main>
 @endsection
