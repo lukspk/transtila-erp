@@ -293,40 +293,56 @@
                                             </div>
                                         </div>
                                         @if (isset($entrega))
+                                            {{-- SUBSTITUA O CONTEÚDO DENTRO DE #primarycontact POR ISTO --}}
                                             <div class="tab-pane fade" id="primarycontact" role="tabpanel">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h5 class="mb-0">Contas Vinculadas</h5>
+                                                    {{-- Botão que abre o modal --}}
+                                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                        data-bs-target="#modalAdicionarConta">
+                                                        <i class="bi bi-plus"></i> Adicionar Conta
+                                                    </button>
+                                                </div>
 
-                                                <table class="table mb-0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">#</th>
-                                                            <th scope="col">Nome</th>
-                                                            <th scope="col">Valor</th>
-                                                            <th scope="col" class="text-end">Ações</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>Combustível</td>
-                                                            <td>R$ 1.200,00</td>
-                                                            <td class="text-end">
-                                                                <button class="btn btn-sm btn-primary">Editar</button>
-                                                                <button class="btn btn-sm btn-danger">Excluir</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">2</th>
-                                                            <td>Pedágio</td>
-                                                            <td>R$ 180,00</td>
-                                                            <td class="text-end">
-                                                                <button class="btn btn-sm btn-primary">Editar</button>
-                                                                <button class="btn btn-sm btn-danger">Excluir</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {{-- A LISTA (tabela) onde as contas vão aparecer --}}
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Despesa</th>
+                                                                <th>Valor (R$)</th>
+                                                                <th class="text-end">Ações</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="listaContasAdicionadas">
+                                                            {{-- Se estiver a editar, mostra as contas que já existem --}}
+                                                            @if(isset($entrega) && $entrega->contasPagar->isNotEmpty())
+                                                                @foreach($entrega->contasPagar as $conta)
+                                                                    <tr>
+                                                                        {{-- Inputs escondidos com os dados que serão salvos no final
+                                                                        --}}
+                                                                        <input type="hidden"
+                                                                            name="contas[{{ $loop->index }}][despesa_id]"
+                                                                            value="{{ $conta->despesa_id }}">
+                                                                        <input type="hidden" name="contas[{{ $loop->index }}][valor]"
+                                                                            value="{{ $conta->valor }}">
 
-
+                                                                        <td>{{ $conta->despesa->nome }}</td>
+                                                                        <td>{{ number_format($conta->valor, 2, ',', '.') }}</td>
+                                                                        <td class="text-end">
+                                                                            <button type="button"
+                                                                                class="btn btn-sm btn-danger btn-remover-conta">Excluir</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <p id="semContasMsg"
+                                                    class="text-center text-muted mt-3 {{ (isset($entrega) && $entrega->contasPagar->isNotEmpty()) ? 'd-none' : '' }}">
+                                                    Nenhuma conta adicionada.
+                                                </p>
                                             </div>
                                             <br>
                                         @endif
@@ -342,21 +358,6 @@
                         </div> --}}
                     </div>
 
-
-
-
-
-
-
-
-
-
-
-                    {{-- DADOS DO MOTORISTA --}}
-
-
-
-                    {{-- DADOS DA ENTREGA --}}
 
 
                     </form>
@@ -400,4 +401,115 @@
         </div>
         </div>
     </main>
+
+
+    @if (isset($entrega))
+        <div class="modal fade" id="modalAdicionarConta" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Adicionar Conta a Pagar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="selectDespesa" class="form-label">Tipo de Despesa</label>
+                            <select id="selectDespesa" name="despesa_id" class="form-select" required>
+                                @if ($despesas->count() > 0)
+                                    <option value="">Selecione uma despesa...</option>
+                                    @foreach ($despesas as $despesa)
+                                        <option value="{{ $despesa->id }}">{{ $despesa->nome }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled selected>Nenhuma despesa cadastrada</option>
+                                @endif
+                            </select>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputValor" class="form-label">Valor (R$)</label>
+                            <input type="text" class="form-control" id="inputValor" placeholder="150.50">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btnConfirmarAddConta">Adicionar à Lista</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endsection
+
+@section('script')
+    <script>
+        $(function () {
+            'use strict';
+
+            $('#btnConfirmarAddConta').on('click', function () {
+                const despesaId = $('#selectDespesa').val();
+                const valor = $('#inputValor').val();
+                const url = '{{ isset($entrega) ? route("entregas.contas.store.ajax", $entrega->id) : '' }}';
+
+                if (!url) {
+                    alert('ERRO: A funcionalidade de adicionar contas só está disponível ao editar uma entrega.');
+                    return;
+                }
+                if (!despesaId || !valor) {
+                    alert('Selecione uma despesa e preencha o valor.');
+                    return;
+                }
+
+                const btn = $(this);
+                btn.prop('disabled', true).html('A Salvar...');
+
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        despesa_id: despesaId,
+                        valor: valor,
+                    },
+                    success: function (novaContaSalva) {
+                        const valorFormatado = parseFloat(novaContaSalva.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
+                        const novaLinha = `
+                                        <tr>
+                                            <td>${novaContaSalva.despesa.nome}</td>
+                                            <td>R$ ${valorFormatado}</td>
+                                            <td class="text-end">
+                                                <button type="button" class="btn btn-sm btn-danger btn-remover-conta">Excluir</button>
+                                            </td>
+                                        </tr>
+                                    `;
+
+                        $('#listaContasAdicionadas').append(novaLinha);
+                        $('#semContasMsg').addClass('d-none');
+                        $('#selectDespesa').val('');
+                        $('#inputValor').val('');
+                        $('#modalAdicionarConta').modal('hide');
+                    },
+                    error: function (xhr) {
+                        alert('Ocorreu um erro ao salvar. Verifique os dados e tente novamente.');
+                    },
+                    complete: function () {
+                        btn.prop('disabled', false).html('Adicionar à Lista');
+                    }
+                });
+            });
+
+            $('#listaContasAdicionadas').on('click', '.btn-remover-conta', function () {
+
+                if (confirm('Tem certeza que deseja remover esta conta? A ação será permanente.')) {
+                    $(this).closest('tr').remove();
+                    if ($('#listaContasAdicionadas tr').length === 0) {
+                        $('#semContasMsg').removeClass('d-none');
+                    }
+                }
+            });
+
+        });
+    </script>
 @endsection

@@ -24,4 +24,9 @@ class Entrega extends Model
         return $this->hasMany(Checkin::class)->orderBy('created_at', 'desc');
     }
 
+    public function contasPagar()
+    {
+        return $this->hasMany(ContaPagar::class);
+    }
+
 }

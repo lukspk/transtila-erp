@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Despesa;
 use App\Models\Entrega;
 use App\Services\ChatPdfService;
 use App\Services\CheckinService;
+use App\Services\ContaPagarService;
 use App\Services\EntregaService;
 use App\Services\GeminiPdfExtractorService;
 use Illuminate\Http\Request;
@@ -18,14 +20,16 @@ class EntregaController extends Controller
     protected $chatPdfService;
 
     protected $checkinService;
+    protected $contaPagarService;
 
 
 
-    public function __construct(EntregaService $entregaService, ChatPdfService $chatPdfService, CheckinService $checkinService)
+    public function __construct(EntregaService $entregaService, ChatPdfService $chatPdfService, CheckinService $checkinService, ContaPagarService $contaPagarService)
     {
         $this->entregaService = $entregaService;
         $this->chatPdfService = $chatPdfService;
         $this->checkinService = $checkinService;
+        $this->contaPagarService = $contaPagarService;
     }
     public function index()
     {
@@ -35,7 +39,8 @@ class EntregaController extends Controller
 
     public function create()
     {
-        return view('entregas.form');
+        $despesas = Despesa::orderBy('nome')->get();
+        return view('entregas.form', compact('despesas'));
     }
 
     /**
@@ -94,7 +99,8 @@ class EntregaController extends Controller
 
     public function edit(Entrega $entrega)
     {
-        return view('entregas.form', compact('entrega'));
+        $despesas = Despesa::orderBy('nome')->get();
+        return view('entregas.form', compact('entrega', 'despesas'));
     }
 
     public function update(Request $request, Entrega $entrega)
@@ -177,14 +183,13 @@ class EntregaController extends Controller
         $uploadedFile = $request->file('pdf_file');
 
         try {
-            // Extrai dados do PDF via ChatPDF
+
             $dados = $this->chatPdfService->extractDamdfDataFromFile($uploadedFile);
 
             Log::info('Dados recebidos', [
                 'Dados:' => $dados
             ]);
 
-            // Mapear campos do PDF para o banco
             $dadosMotorista = [
                 'nome' => $dados['motorista']['nome'] ?? null,
                 'cpf' => $dados['motorista']['cpf'] ?? null,
@@ -250,5 +255,19 @@ class EntregaController extends Controller
         }
 
         return view('entregas.show', compact('entrega', 'checkinLink'));
+    }
+
+    public function storeAjax(Request $request, Entrega $entrega)
+    {
+        $data = $request->validate([
+            'despesa_id' => 'required|exists:despesas,id',
+            'valor' => 'required|numeric|min:0.01',
+        ]);
+
+        $data['entrega_id'] = $entrega->id;
+
+        $novaConta = $this->contaPagarService->store($data);
+
+        return response()->json($novaConta->load('despesa'));
     }
 }

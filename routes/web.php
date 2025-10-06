@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         // Adiciona estas duas linhas junto às tuas outras rotas de entrega
         Route::get('/upload/create', [EntregaController::class, 'showUploadForm'])->name('upload.create');
         Route::post('/upload', [EntregaController::class, 'processarUpload'])->name('upload');
+        Route::post('/entregas/{entrega}/contas', [EntregaController::class, 'storeAjax'])->name('contas.store.ajax');
     });
 
 
