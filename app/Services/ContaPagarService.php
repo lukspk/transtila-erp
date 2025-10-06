@@ -10,4 +10,9 @@ class ContaPagarService
     {
         return ContaPagar::create($data);
     }
+
+    public function deletarConta(ContaPagar $contaPagar)
+    {
+        return $contaPagar->delete();
+    }
 }

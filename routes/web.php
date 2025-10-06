@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/upload/create', [EntregaController::class, 'showUploadForm'])->name('upload.create');
         Route::post('/upload', [EntregaController::class, 'processarUpload'])->name('upload');
         Route::post('/entregas/{entrega}/contas', [EntregaController::class, 'storeAjax'])->name('contas.store.ajax');
+        Route::delete('/entregas/contas/{id}', [EntregaController::class, 'deletarConta'])->name('contas.delete.ajax');
     });
 
 

@@ -331,7 +331,8 @@
                                                                         <td>{{ number_format($conta->valor, 2, ',', '.') }}</td>
                                                                         <td class="text-end">
                                                                             <button type="button"
-                                                                                class="btn btn-sm btn-danger btn-remover-conta">Excluir</button>
+                                                                                class="btn btn-sm btn-danger delete-btn"
+                                                                                data-route="{{ route('entregas.contas.delete.ajax', $conta->id) }}">
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
@@ -428,7 +429,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="inputValor" class="form-label">Valor (R$)</label>
-                            <input type="text" class="form-control" id="inputValor" placeholder="150.50">
+                            <input type="text" class="form-control" id="inputValor" maxlength="15" placeholder="150.50">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -442,10 +443,12 @@
 @endsection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
     <script>
         $(function () {
             'use strict';
-
+            $('#inputValor').mask('#.##0,00', { reverse: true });
             $('#btnConfirmarAddConta').on('click', function () {
                 const despesaId = $('#selectDespesa').val();
                 const valor = $('#inputValor').val();
@@ -476,14 +479,14 @@
                         const valorFormatado = parseFloat(novaContaSalva.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
                         const novaLinha = `
-                                        <tr>
-                                            <td>${novaContaSalva.despesa.nome}</td>
-                                            <td>R$ ${valorFormatado}</td>
-                                            <td class="text-end">
-                                                <button type="button" class="btn btn-sm btn-danger btn-remover-conta">Excluir</button>
-                                            </td>
-                                        </tr>
-                                    `;
+                                                                                                                        <tr>
+                                                                                                                            <td>${novaContaSalva.despesa.nome}</td>
+                                                                                                                            <td>R$ ${valorFormatado}</td>
+                                                                                                                            <td class="text-end">
+                                                                                                                                <button type="button" class="btn btn-sm btn-danger btn-remover-conta">Excluir</button>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    `;
 
                         $('#listaContasAdicionadas').append(novaLinha);
                         $('#semContasMsg').addClass('d-none');
@@ -508,6 +511,47 @@
                         $('#semContasMsg').removeClass('d-none');
                     }
                 }
+            });
+
+            $('.delete-btn').click(function () {
+                var btn = $(this);
+                var route = btn.data('route');
+
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: "Essa ação não poderá ser desfeita!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: route,
+                            type: 'POST',
+                            data: { _method: 'DELETE' },
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Deletado!',
+                                    text: data.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+
+                            },
+                            error: function () {
+                                Swal.fire('Erro!', 'Algo deu errado.', 'error');
+                            }
+                        });
+                    }
+                });
             });
 
         });

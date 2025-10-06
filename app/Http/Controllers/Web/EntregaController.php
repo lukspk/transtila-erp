@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContaPagar;
 use App\Models\Despesa;
 use App\Models\Entrega;
 use App\Services\ChatPdfService;
@@ -259,6 +260,10 @@ class EntregaController extends Controller
 
     public function storeAjax(Request $request, Entrega $entrega)
     {
+        $request->merge([
+            'valor' => str_replace(['.', ','], ['', '.'], $request->input('valor', ''))
+        ]);
+
         $data = $request->validate([
             'despesa_id' => 'required|exists:despesas,id',
             'valor' => 'required|numeric|min:0.01',
@@ -269,5 +274,14 @@ class EntregaController extends Controller
         $novaConta = $this->contaPagarService->store($data);
 
         return response()->json($novaConta->load('despesa'));
+    }
+    public function deletarConta(ContaPagar $contaPagar)
+    {
+        $this->contaPagarService->deletarConta($contaPagar);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Conta deletado com sucesso!'
+        ]);
     }
 }
