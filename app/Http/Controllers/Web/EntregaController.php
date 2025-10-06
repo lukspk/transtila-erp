@@ -232,7 +232,6 @@ class EntregaController extends Controller
             $this->entregaService->criarEntrega($dadosEntrega, $dadosMotorista);
 
             return redirect()->route('entregas.index')->with('success', 'Entrega criada com sucesso!');
-
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Erro ao processar PDF: ' . $e->getMessage());
         }
