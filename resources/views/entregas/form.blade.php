@@ -332,7 +332,7 @@
                                                                         <td class="text-end">
                                                                             <button type="button"
                                                                                 class="btn btn-sm btn-danger delete-btn"
-                                                                                data-route="{{ route('entregas.contas.delete.ajax', $conta->id) }}">
+                                                                                data-route="{{ route('entregas.contas.delete.ajax', $conta->id) }}">Excluir</button>
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
@@ -479,14 +479,14 @@
                         const valorFormatado = parseFloat(novaContaSalva.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
                         const novaLinha = `
-                                                                                                                        <tr>
-                                                                                                                            <td>${novaContaSalva.despesa.nome}</td>
-                                                                                                                            <td>R$ ${valorFormatado}</td>
-                                                                                                                            <td class="text-end">
-                                                                                                                                <button type="button" class="btn btn-sm btn-danger btn-remover-conta">Excluir</button>
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                    `;
+                                                                                                                            <tr>
+                                                                                                                                <td>${novaContaSalva.despesa.nome}</td>
+                                                                                                                                <td>R$ ${valorFormatado}</td>
+                                                                                                                                <td class="text-end">
+                                                                                                                                    <button type="button" class="btn btn-sm btn-danger btn-remover-conta">Excluir</button>
+                                                                                                                                </td>
+                                                                                                                            </tr>
+                                                                                                                        `;
 
                         $('#listaContasAdicionadas').append(novaLinha);
                         $('#semContasMsg').addClass('d-none');
