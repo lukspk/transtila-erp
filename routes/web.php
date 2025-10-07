@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\Auth\AuthController;
 use App\Http\Controllers\Web\CheckinController;
 use App\Http\Controllers\Web\EntregaController;
+use App\Http\Controllers\Web\FinanceiroController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/upload', [EntregaController::class, 'processarUpload'])->name('upload');
         Route::post('/entregas/{entrega}/contas', [EntregaController::class, 'storeAjax'])->name('contas.store.ajax');
         Route::delete('/entregas/contas/{id}', [EntregaController::class, 'deletarConta'])->name('contas.delete.ajax');
+    });
+
+
+    Route::prefix('financeiro')->name('financeiro.')->middleware(['role:administrador'])->group(function () {
+        Route::get('/', [FinanceiroController::class, 'index'])->name('index');
+        Route::get('/create', [FinanceiroController::class, 'create'])->name('create');
+        Route::post('/', [FinanceiroController::class, 'store'])->name('store');
     });
 
 

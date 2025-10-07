@@ -37,6 +37,13 @@
             <div class="menu-title">Entregas</div>
           </a>
         </li>
+        <li>
+          <a href="{{ route('financeiro.index')  }}">
+            <div class="parent-icon"><i class="material-icons-outlined">account_balance_wallet</i>
+            </div>
+            <div class="menu-title">Financeiro</div>
+          </a>
+        </li>
       </ul>
       <!--end navigation-->
     </div>
