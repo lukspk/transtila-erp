@@ -8,12 +8,14 @@
                 <div
                     class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex border-end bg-transparent">
 
-                    <div class="card rounded-0 mb-0 border-0 shadow-none bg-transparent bg-none">
-                        <div class="card-body">
-                            <img src="{{ asset('assets/images/auth/login1.png') }}" class="img-fluid auth-img-cover-login"
-                                width="650" alt="">
-                        </div>
-                    </div>
+                    {{-- <div class="card rounded-0 mb-0 border-0 shadow-none bg-transparent bg-none"> --}}
+                    {{-- <div class="card-body"> --}}
+                    {{-- <img src="{{ asset('assets/images/auth/login1.png') }}" class="img-fluid auth-img-cover-login"
+                                width="650" alt=""> --}}
+                    <img src="{{ asset('images/background-image-login.jpg') }}" class="img-fluid auth-img-cover-login w-100 "
+                        style=" height: 100vh;height: 100dvh;object-fit: cover;object-position: center;" alt="">
+                    {{-- </div> --}}
+                    {{-- </div> --}}
 
                 </div>
 
@@ -94,8 +96,8 @@
 
 @section('script')
     <script>
-        $(document).ready(function () {
-            $("#show_hide_password a").on('click', function (event) {
+        $(document).ready(function() {
+            $("#show_hide_password a").on('click', function(event) {
                 event.preventDefault();
                 let input = $('#show_hide_password input');
                 let icon = $('#show_hide_password i');
