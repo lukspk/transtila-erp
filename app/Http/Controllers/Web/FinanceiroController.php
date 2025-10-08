@@ -34,19 +34,22 @@ class FinanceiroController extends Controller
         $request->merge([
             'valor' => $this->financeiroService->formatarValorParaBanco($request->input('valor'))
         ]);
+        try {
+            $dadosValidados = $request->validate([
+                'tipo' => 'required|in:PAGAR,RECEBER',
+                'nome' => 'required|string|max:255',
+                'descricao' => 'required|string',
+                'financeiro_categoria_id' => 'required|exists:financeiro_categorias,id',
+                'valor' => 'required|numeric|min:0.01',
+                'data_vencimento' => 'required|date',
+                'status' => 'required|in:Pendente,Pago,Atrasado,Cancelado',
+            ]);
 
-        $dadosValidados = $request->validate([
-            'tipo' => 'required|in:PAGAR,RECEBER',
-            'nome' => 'required|string|max:255',
-            'descricao' => 'required|string',
-            'financeiro_categoria_id' => 'required|exists:financeiro_categorias,id',
-            'valor' => 'required|numeric|min:0.01',
-            'data_vencimento' => 'required|date',
-            'status' => 'required|in:Pendente,Pago,Atrasado,Cancelado',
-        ]);
+            $this->financeiroService->store($dadosValidados);
 
-        $this->financeiroService->store($dadosValidados);
-
-        return redirect()->route('financeiro.index')->with('success', 'criado com sucesso!');
+            return redirect()->route('financeiro.index')->with('success', 'criado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao criar financeiro: ' . $e->getMessage());
+        }
     }
 }

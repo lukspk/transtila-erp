@@ -1,6 +1,7 @@
 @extends('layouts.maxton')
 @section('title', 'Novo')
 
+
 @section('content')
     <main class="main-wrapper">
         <div class="main-content">
@@ -16,52 +17,68 @@
                     </nav>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 col-lg-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="formFinanceiro" action="{{ route('financeiro.store') }}" method="POST">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-tabs nav-primary" role="tablist">
+                        {{-- ABA PARA CADASTRAR CONTA A PAGAR --}}
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#pagar" role="tab" aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon"><i class="bi bi-arrow-down-circle me-1 fs-6"></i></div>
+                                    <div class="tab-title">Nova Despesa (A Pagar)</div>
+                                </div>
+                            </a>
+                        </li>
+                        {{-- ABA PARA CADASTRAR CONTA A RECEBER --}}
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#receber" role="tab" aria-selected="false">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon"><i class="bi bi-arrow-up-circle me-1 fs-6"></i></div>
+                                    <div class="tab-title">Nova Receita (A Receber)</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content py-3">
+                        {{-- DIV/FORMULÁRIO PARA CONTAS A PAGAR --}}
+                        <div class="tab-pane fade show active" id="pagar" role="tabpanel">
+                            <form action="{{ route('financeiro.store') }}" method="POST">
                                 @csrf
+                                <input type="hidden" name="tipo" value="PAGAR">
                                 <div class="row g-3">
-                                    <div class="col-12 col-lg-6">
-                                        <label for="tipo" class="form-label">Tipo</label>
-                                        <select name="tipo" id="tipo" class="form-select" required>
-                                            <option value="">Selecione...</option>
-                                            <option value="PAGAR">Conta a Pagar</option>
-                                            <option value="RECEBER">Conta a Receber</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-lg-6">
-                                        <label for="financeiro_categoria_id" class="form-label">Categoria</label>
-                                        <select name="financeiro_categoria_id" id="financeiro_categoria_id"
-                                            class="form-select" required>
-                                            <option selected>Selecione...</option>
-                                            @forelse ($categorias as $categoria)
-                                                <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
-                                            @empty
-                                                <option value="">Nenhuma categoria encontrada</option>
-                                            @endforelse
-                                        </select>
-                                    </div>
                                     <div class="col-12">
-                                        <label for="nome" class="form-label">Nome</label>
+                                        <label class="form-label">Nome</label>
                                         <input type="text" name="nome" class="form-control" placeholder="Nome" required>
                                     </div>
                                     <div class="col-12">
-                                        <label for="descricao" class="form-label">Descrição</label>
-                                        <textarea name="descricao" class="form-control" rows="3" placeholder="Detalhes"
-                                            required></textarea>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <label for="valor" class="form-label">Valor (R$)</label>
-                                        <input type="text" name="valor" id="valor" class="form-control" placeholder="0,00"
+                                        <label for="categoria_pagar" class="form-label">Categoria da Despesa</label>
+                                        {{-- SELECT NORMAL, SEM SELECT2 --}}
+                                        <select name="financeiro_categoria_id" id="categoria_pagar" class="form-select"
                                             required>
+                                            <option value="">Selecione uma categoria...</option>
+                                            {{-- Popula com as categorias de PAGAR --}}
+                                            @foreach ($categorias as $categoria)
+                                                <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="col-12 col-lg-4">
-                                        <label for="data_vencimento" class="form-label">Data de Vencimento</label>
+                                    <div class="col-12">
+                                        <label class="form-label">Descrição</label>
+                                        <textarea name="descricao" class="form-control" rows="2"
+                                            placeholder="Detalhes da despesa" required></textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Valor (R$)</label>
+                                        <input type="text" name="valor" class="form-control mask-valor" placeholder="0,00"
+                                            id="valorPagar" required>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Data de Vencimento</label>
                                         <input type="date" name="data_vencimento" class="form-control" required>
                                     </div>
-                                    <div class="col-6 col-lg-4">
+                                    <div class="col-4 col-lg-4">
                                         <label for="status" class="form-label">Status</label>
                                         <select name="status" class="form-select" required>
                                             <option value="Pendente" selected>Pendente</option>
@@ -70,10 +87,60 @@
                                             <option value="Cancelado">Cancelado</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 d-flex align-items-center mt-4">
-                                        <a href="{{ route('financeiro.index') }}"
-                                            class="btn btn-outline-secondary px-4 me-2">Cancelar</a>
-                                        <button type="submit" class="btn btn-success px-4">Salvar</button>
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary">Adicionar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        {{-- DIV/FORMULÁRIO PARA CONTAS A RECEBER --}}
+                        <div class="tab-pane fade" id="receber" role="tabpanel">
+                            <form action="{{ route('financeiro.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="tipo" value="RECEBER">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label">Nome</label>
+                                        <input type="text" name="nome" class="form-control" placeholder="Nome" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="categoria_receber" class="form-label">Categoria da Receita</label>
+                                        {{-- SELECT NORMAL, SEM SELECT2 --}}
+                                        <select name="financeiro_categoria_id" id="categoria_receber" class="form-select"
+                                            required>
+                                            <option value="">Selecione uma categoria...</option>
+                                            @foreach ($categorias as $categoria)
+                                                <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Descrição</label>
+                                        <textarea name="descricao" class="form-control" rows="2"
+                                            placeholder="Detalhes da receita" required></textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Valor (R$)</label>
+                                        <input type="text" name="valor" class="form-control mask-valor" placeholder="0,00"
+                                            id="valorReceber" required>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Data de Vencimento</label>
+                                        <input type="date" name="data_vencimento" class="form-control" required>
+                                    </div>
+                                    <div class="col-4 col-lg-4">
+                                        <label for="status" class="form-label">Status</label>
+                                        <select name="status" class="form-select" required>
+                                            <option value="Pendente" selected>Pendente</option>
+                                            <option value="Pago">Pago</option>
+                                            <option value="Atrasado">Atrasado</option>
+                                            <option value="Cancelado">Cancelado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary">Adicionar</button>
                                     </div>
                                 </div>
                             </form>
@@ -92,7 +159,8 @@
             'use strict';
 
 
-            $('#valor').mask('#.##0,00', { reverse: true });
+            $('#valorPagar').mask('#.##0,00', { reverse: true });
+            $('#valorReceber').mask('#.##0,00', { reverse: true });
 
 
         });
