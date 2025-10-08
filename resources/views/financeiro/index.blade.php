@@ -66,7 +66,7 @@
                                             @endif
                                         </td>
                                         <td class="text-end">
-                                            <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                                            {{-- <a href="#" class="btn btn-sm btn-warning">Editar</a> --}}
                                             <button type="button" class="btn btn-sm btn-danger delete-btn"
                                                 data-route="{{ route('financeiro.delete', $financeiro->id) }}">
                                                 Excluir
