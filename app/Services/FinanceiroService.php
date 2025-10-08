@@ -10,12 +10,18 @@ class FinanceiroService
     {
         return Financeiro::with('financeiroCategoria')
             ->orderBy('data_vencimento', 'desc')
-            ->paginate(15);
+            ->paginate(20);
     }
 
-    public function store(array $data): Financeiro
+    public function store(array $data)
     {
         return Financeiro::create($data);
+    }
+
+
+    public function deletarConta(Financeiro $financeiro)
+    {
+        return $financeiro->delete();
     }
 
     public function formatarValorParaBanco(?string $valor): float
@@ -27,4 +33,5 @@ class FinanceiroService
         $valorLimpo = str_replace(',', '.', $valorLimpo);
         return (float) $valorLimpo;
     }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Financeiro;
 use App\Models\FinanceiroCategoria;
 use App\Services\FinanceiroService;
 use Illuminate\Http\Request;
@@ -19,8 +20,9 @@ class FinanceiroController extends Controller
     public function index()
     {
         $financeiros = $this->financeiroService->getAllPaginated();
+        $categorias = FinanceiroCategoria::orderBy('nome')->get();
 
-        return view('financeiro.index', compact('financeiros'));
+        return view('financeiro.index', compact('financeiros', 'categorias'));
     }
 
     public function create()
@@ -51,5 +53,22 @@ class FinanceiroController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Erro ao criar financeiro: ' . $e->getMessage());
         }
+    }
+
+    public function deletarConta(Financeiro $financeiro)
+    {
+        try {
+            $this->financeiroService->deletarConta($financeiro);
+            return response()->json([
+                'success' => true,
+                'message' => 'Conta deletado com sucesso!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao deletar conta: ' . $e->getMessage()
+            ]);
+        }
+
     }
 }

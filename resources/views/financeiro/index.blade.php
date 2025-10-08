@@ -16,9 +16,13 @@
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <a href="{{ route('financeiro.create') }}" class="btn btn-primary px-4">
-                        Novo
-                    </a>
+                    <button type="button" class="btn btn-danger px-4" data-bs-toggle="modal" data-bs-target="#modalPagar">
+                        Adicionar Despesa
+                    </button>
+                    <button type="button" class="btn btn-success px-4" data-bs-toggle="modal"
+                        data-bs-target="#modalReceber">
+                        Adicionar Receita
+                    </button>
                 </div>
             </div>
             <div class="card">
@@ -63,7 +67,8 @@
                                         </td>
                                         <td class="text-end">
                                             <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                                            <button type="button" class="btn btn-sm btn-danger delete-btn" data-route="#">
+                                            <button type="button" class="btn btn-sm btn-danger delete-btn"
+                                                data-route="{{ route('financeiro.delete', $financeiro->id) }}">
                                                 Excluir
                                             </button>
                                         </td>
@@ -77,18 +82,155 @@
                         </table>
                     </div>
 
-                    {{-- Links de paginação --}}
                     @if($financeiros->hasPages())
                         <div class="mt-3">
-                            {{ $financeiros->links() }}
+                            {{ $financeiros->links('pagination::bootstrap-5') }}
                         </div>
                     @endif
                 </div>
             </div>
         </div>
     </main>
+
+    <div class="modal fade" id="modalPagar" tabindex="-1">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('financeiro.store') }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Nova Despesa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="tipo" value="PAGAR">
+                    <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome"
+                            class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label">Categoria</label><select name="financeiro_categoria_id"
+                            class="form-select" required>
+                            <option value="">Selecione...</option>@foreach($categorias as $cat)
+                            <option value="{{$cat->id}}">{{$cat->nome}}</option>@endforeach
+                        </select></div>
+                    <div class="mb-3"><label class="form-label">Descrição</label><textarea name="descricao"
+                            class="form-control" rows="2" required></textarea></div>
+                    <div class="row">
+                        <div class="col-4"><label class="form-label">Valor (R$)</label><input type="text" name="valor"
+                                class="form-control mask-valor" required></div>
+                        <div class="col-4"><label class="form-label">Vencimento</label><input type="date"
+                                name="data_vencimento" class="form-control" required></div>
+                        <div class="col-4 ">
+                            <label for="status" class="form-label">Status</label>
+                            <select name="status" class="form-select" required>
+                                <option value="Pendente" selected>Pendente</option>
+                                <option value="Pago">Pago</option>
+                                <option value="Atrasado">Atrasado</option>
+                                <option value="Cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Cancelar</button><button type="submit"
+                        class="btn btn-primary">Salvar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalReceber" tabindex="-1">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('financeiro.store') }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Nova Receita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="tipo" value="RECEBER">
+                    <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome"
+                            class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label">Categoria</label><select name="financeiro_categoria_id"
+                            class="form-select" required>
+                            <option value="">Selecione...</option>@foreach($categorias as $cat)
+                            <option value="{{$cat->id}}">{{$cat->nome}}</option>@endforeach
+                        </select></div>
+                    <div class="mb-3"><label class="form-label">Descrição</label><textarea name="descricao"
+                            class="form-control" rows="2" required></textarea></div>
+                    <div class="row">
+                        <div class="col-4"><label class="form-label">Valor (R$)</label><input type="text" name="valor"
+                                class="form-control mask-valor" required></div>
+                        <div class="col-4"><label class="form-label">Vencimento</label><input type="date"
+                                name="data_vencimento" class="form-control" required></div>
+                        <div class="col-4 ">
+                            <label for="status" class="form-label">Status</label>
+                            <select name="status" class="form-select" required>
+                                <option value="Pendente" selected>Pendente</option>
+                                <option value="Pago">Pago</option>
+                                <option value="Atrasado">Atrasado</option>
+                                <option value="Cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Cancelar</button><button type="submit"
+                        class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
+
 @section('script')
-    {{-- Aqui podemos adicionar o script de exclusão no futuro --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+        $(function () {
+            'use strict';
+            $('[name="valor"]').mask('#.##0,00', { reverse: true });
+        });
+
+        $(document).ready(function () {
+            $('.delete-btn').click(function () {
+                var btn = $(this);
+                var route = btn.data('route');
+
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: "Essa ação não poderá ser desfeita!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: route,
+                            type: 'POST',
+                            data: { _method: 'DELETE' },
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            success: function (data) {
+
+                                Swal.fire({
+                                    title: 'Deletado!',
+                                    text: data.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+                            },
+                            error: function () {
+                                Swal.fire('Erro!', 'Algo deu errado.', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

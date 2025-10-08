@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [FinanceiroController::class, 'index'])->name('index');
         Route::get('/create', [FinanceiroController::class, 'create'])->name('create');
         Route::post('/', [FinanceiroController::class, 'store'])->name('store');
+        Route::delete('/delete/{id}', [FinanceiroController::class, 'deletarConta'])->name('delete');
     });
 
 
