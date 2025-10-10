@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [FinanceiroController::class, 'create'])->name('create');
         Route::post('/', [FinanceiroController::class, 'store'])->name('store');
         Route::delete('/delete/{id}', [FinanceiroController::class, 'deletarConta'])->name('delete');
+        Route::get('/{financeiro}', [FinanceiroController::class, 'showDetail'])->name('show.detail');
+        Route::patch('/parcela/{parcela}/pagar', [FinanceiroController::class, 'pagar'])->name('parcela.pagar');
     });
 
 

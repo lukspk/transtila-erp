@@ -15,4 +15,8 @@ class Financeiro extends Model
     {
         return $this->belongsTo(FinanceiroCategoria::class);
     }
+    public function parcelas()
+    {
+        return $this->hasMany(FinanceiroParcela::class)->orderBy('numero_parcela', 'asc');
+    }
 }

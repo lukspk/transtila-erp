@@ -66,7 +66,9 @@
                                             @endif
                                         </td>
                                         <td class="text-end">
-                                            {{-- <a href="#" class="btn btn-sm btn-warning">Editar</a> --}}
+
+                                            <a href="{{ route('financeiro.show.detail', $financeiro->id) }}"
+                                                class="btn btn-sm btn-info">Ver Detalhes</a>
                                             <button type="button" class="btn btn-sm btn-danger delete-btn"
                                                 data-route="{{ route('financeiro.delete', $financeiro->id) }}">
                                                 Excluir
@@ -111,6 +113,7 @@
                         </select></div>
                     <div class="mb-3"><label class="form-label">Descrição</label><textarea name="descricao"
                             class="form-control" rows="2" required></textarea></div>
+
                     <div class="row">
                         <div class="col-4"><label class="form-label">Valor (R$)</label><input type="text" name="valor"
                                 class="form-control mask-valor" required></div>
@@ -125,11 +128,16 @@
                                 <option value="Cancelado">Cancelado</option>
                             </select>
                         </div>
+                        {{-- Dentro do <div class="row g-3"> do formulário #pagar --}}
+                            <div class="col-md-4">
+                                <label class="form-label">Nº de Parcelas</label>
+                                <input type="number" name="numero_parcelas" class="form-control" value="1" min="1">
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Cancelar</button><button type="submit"
-                        class="btn btn-primary">Salvar</button></div>
+                    <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancelar</button><button type="submit"
+                            class="btn btn-primary">Salvar</button></div>
             </form>
         </div>
     </div>

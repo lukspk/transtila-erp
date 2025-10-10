@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Financeiro;
 use App\Models\FinanceiroCategoria;
+use App\Models\FinanceiroParcela;
 use App\Services\FinanceiroService;
 use Illuminate\Http\Request;
 
@@ -25,11 +26,6 @@ class FinanceiroController extends Controller
         return view('financeiro.index', compact('financeiros', 'categorias'));
     }
 
-    public function create()
-    {
-        $categorias = FinanceiroCategoria::orderBy('nome')->get();
-        return view('financeiro.form', compact('categorias'));
-    }
 
     public function store(Request $request)
     {
@@ -45,6 +41,7 @@ class FinanceiroController extends Controller
                 'valor' => 'required|numeric|min:0.01',
                 'data_vencimento' => 'required|date',
                 'status' => 'required|in:Pendente,Pago,Atrasado,Cancelado',
+                'numero_parcelas' => 'required|integer|min:1',
             ]);
 
             $this->financeiroService->store($dadosValidados);
@@ -70,5 +67,15 @@ class FinanceiroController extends Controller
             ]);
         }
 
+    }
+    public function showDetail(Financeiro $financeiro)
+    {
+        return view('financeiro.detail', ['financeiro' => $financeiro->load('parcelas')]);
+    }
+
+    public function pagar(FinanceiroParcela $parcela)
+    {
+        $this->financeiroService->pagar($parcela);
+        return back()->with('success', 'Parcela paga com sucesso!');
     }
 }
