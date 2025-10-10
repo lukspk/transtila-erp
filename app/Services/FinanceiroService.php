@@ -17,36 +17,37 @@ class FinanceiroService
 
     public function store(array $data): Financeiro
     {
-        // 1. Pega o número de parcelas e remove-o dos dados principais
-        $numeroParcelas = (int) $data['numero_parcelas'];
+
+        $numeroParcelas = (int) ($data['numero_parcelas'] ?? 1);
         unset($data['numero_parcelas']);
 
-        $lancamentoPai = Financeiro::create($data);
+        $financeiroPai = Financeiro::create($data);
+        if ($numeroParcelas > 1) {
+
+            $valorTotal = (float) $data['valor'];
+            $valorParcela = round($valorTotal / $numeroParcelas, 2);
 
 
-        $valorTotal = (float) $data['valor'];
-        $valorParcela = round($valorTotal / $numeroParcelas, 2);
+            $somaParcelas = $valorParcela * $numeroParcelas;
+            $diferenca = $valorTotal - $somaParcelas;
 
 
-        $somaParcelas = $valorParcela * $numeroParcelas;
-        $diferenca = $valorTotal - $somaParcelas;
+            for ($i = 1; $i <= $numeroParcelas; $i++) {
+                $valorDaParcelaAtual = $valorParcela;
+                if ($i == $numeroParcelas) {
+                    $valorDaParcelaAtual += $diferenca;
+                }
 
-
-        for ($i = 1; $i <= $numeroParcelas; $i++) {
-            $valorDaParcelaAtual = $valorParcela;
-            if ($i == $numeroParcelas) {
-                $valorDaParcelaAtual += $diferenca;
+                $financeiroPai->parcelas()->create([
+                    'numero_parcela' => $i,
+                    'valor_parcela' => $valorDaParcelaAtual,
+                    'data_vencimento' => Carbon::parse($data['data_vencimento'])->addMonths($i - 1),
+                    'status' => 'Pendente',
+                ]);
             }
-
-            $lancamentoPai->parcelas()->create([
-                'numero_parcela' => $i,
-                'valor_parcela' => $valorDaParcelaAtual,
-                'data_vencimento' => Carbon::parse($data['data_vencimento'])->addMonths($i - 1),
-                'status' => 'Pendente',
-            ]);
         }
 
-        return $lancamentoPai;
+        return $financeiroPai;
     }
 
 
