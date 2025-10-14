@@ -23,6 +23,9 @@ class FinanceiroService
 
         $data['numero_parcelas'] = $numeroParcelas;
 
+
+
+
         $financeiroPai = Financeiro::create($data);
 
         if ($numeroParcelas > 1) {

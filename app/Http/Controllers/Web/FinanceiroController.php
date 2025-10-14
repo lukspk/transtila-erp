@@ -32,17 +32,30 @@ class FinanceiroController extends Controller
         $request->merge([
             'valor' => $this->financeiroService->formatarValorParaBanco($request->input('valor'))
         ]);
+
+
         try {
             $dadosValidados = $request->validate([
                 'tipo' => 'required|in:PAGAR,RECEBER',
                 'nome' => 'required|string|max:255',
                 'descricao' => 'required|string',
-                'financeiro_categoria_id' => 'required|exists:financeiro_categorias,id',
+                'financeiro_categoria_id' => 'required',
                 'valor' => 'required|numeric|min:0.01',
                 'data_vencimento' => 'required|date',
                 'status' => 'required|in:Pendente,Pago,Atrasado,Cancelado',
-                'numero_parcelas' => 'required|integer|min:1',
+                'numero_parcelas' => 'integer|min:1',
             ]);
+
+
+            $categoriaInput = $dadosValidados['financeiro_categoria_id'];
+            if (!is_numeric($categoriaInput)) {
+                $categoria = FinanceiroCategoria::firstOrCreate(
+                    ['nome' => $categoriaInput]
+                );
+
+                $dadosValidados['financeiro_categoria_id'] = $categoria->id;
+            }
+
 
             $this->financeiroService->store($dadosValidados);
 

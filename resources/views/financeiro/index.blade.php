@@ -1,6 +1,10 @@
 @extends('layouts.maxton')
 @section('title', 'Financeiro - Lançamentos')
-
+@section('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
+@endsection
 @section('content')
     <main class="main-wrapper">
         <div class="main-content">
@@ -108,11 +112,16 @@
                     <input type="hidden" name="tipo" value="PAGAR">
                     <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome"
                             class="form-control" required></div>
-                    <div class="mb-3"><label class="form-label">Categoria</label><select name="financeiro_categoria_id"
-                            class="form-select" required>
-                            <option value="">Selecione...</option>@foreach($categorias as $cat)
-                            <option value="{{$cat->id}}">{{$cat->nome}}</option>@endforeach
-                        </select></div>
+                    <div class="mb-3">
+                        <label for="select2-pagar" class="form-label fw-semibold"> Categoria
+                        </label>
+
+                        <select class="form-select select2-pagar w-100 border-3" id="select2-pagar"
+                            name="financeiro_categoria_id" required>
+                            <option></option>
+                        </select>
+
+                    </div>
                     <div class="mb-3"><label class="form-label">Descrição</label><textarea name="descricao"
                             class="form-control" rows="2" required></textarea></div>
 
@@ -156,11 +165,16 @@
                     <input type="hidden" name="tipo" value="RECEBER">
                     <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome"
                             class="form-control" required></div>
-                    <div class="mb-3"><label class="form-label">Categoria</label><select name="financeiro_categoria_id"
-                            class="form-select" required>
-                            <option value="">Selecione...</option>@foreach($categorias as $cat)
-                            <option value="{{$cat->id}}">{{$cat->nome}}</option>@endforeach
-                        </select></div>
+                    <div class="mb-3">
+                        <label for="select2-receber" class="form-label fw-semibold"> Categoria
+                        </label>
+
+                        <select class="form-select select2-receber w-100 border-3" id="select2-receber"
+                            name="financeiro_categoria_id" required>
+                            <option></option>
+                        </select>
+
+                    </div>
                     <div class="mb-3"><label class="form-label">Descrição</label><textarea name="descricao"
                             class="form-control" rows="2" required></textarea></div>
                     <div class="row">
@@ -193,13 +207,35 @@
 
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(function () {
-            'use strict';
-            $('[name="valor"]').mask('#.##0,00', { reverse: true });
-        });
-
         $(document).ready(function () {
+            $('[name="valor"]').mask('#.##0,00', { reverse: true });
+
+            function inicializarSelect2(selector, data, placeholder) {
+                $(selector).select2({
+                    theme: "bootstrap-5",
+                    width: '100%',
+                    placeholder: placeholder,
+                    tags: true,
+                    allowClear: true,
+                    data: data,
+                    dropdownParent: $(selector).closest('.modal').length
+                        ? $(selector).closest('.modal')
+                        : $('body'),
+                    language: {
+                        noResults: () => "Nenhuma categoria encontrada",
+                        searching: () => "Buscando...",
+                    },
+                });
+            }
+
+            const todasCategorias = @json($categorias);
+            const categoriasSelect = todasCategorias.map(c => ({ id: c.id, text: c.nome }));
+
+            inicializarSelect2('.select2-pagar', categoriasSelect, 'Selecione ou crie uma categoria de despesa');
+            inicializarSelect2('.select2-receber', categoriasSelect, 'Selecione ou crie uma categoria de receita');
+
             $('.delete-btn').click(function () {
                 var btn = $(this);
                 var route = btn.data('route');
@@ -243,4 +279,8 @@
             });
         });
     </script>
+
+
+
+
 @endsection
