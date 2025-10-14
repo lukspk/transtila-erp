@@ -21,7 +21,10 @@ class FinanceiroService
         $numeroParcelas = (int) ($data['numero_parcelas'] ?? 1);
         unset($data['numero_parcelas']);
 
+        $data['numero_parcelas'] = $numeroParcelas;
+
         $financeiroPai = Financeiro::create($data);
+
         if ($numeroParcelas > 1) {
 
             $valorTotal = (float) $data['valor'];

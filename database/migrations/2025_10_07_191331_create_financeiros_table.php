@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->foreignId('financeiro_categoria_id')->nullable()->constrained('financeiro_categorias')->onDelete('set null');
 
             $table->decimal('valor', 10, 2);
+            $table->integer('numero_parcelas')->nullable();
             $table->date('data_vencimento');
             $table->date('data_pagamento')->nullable();
             $table->enum('status', ['Pendente', 'Pago', 'Atrasado', 'Cancelado'])->default('Pendente');

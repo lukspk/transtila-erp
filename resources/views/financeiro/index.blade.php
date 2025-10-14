@@ -35,6 +35,7 @@
                                     <th>Descrição</th>
                                     <th>Valor</th>
                                     <th>Vencimento</th>
+                                    <th>Parcelas</th>
                                     <th>Status</th>
                                     <th>Tipo</th>
                                     <th class="text-end">Ações</th>
@@ -49,6 +50,7 @@
                                             R$ {{ number_format($financeiro->valor, 2, ',', '.') }}
                                         </td>
                                         <td>{{ \Carbon\Carbon::parse($financeiro->data_vencimento)->format('d/m/Y') }}</td>
+                                        <td>{{ $financeiro->numero_parcelas }}</td>
                                         <td>
                                             @if($financeiro->status == 'Pendente')
                                                 <span class="badge bg-warning">{{ $financeiro->status }}</span>
