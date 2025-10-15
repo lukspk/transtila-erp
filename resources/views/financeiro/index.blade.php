@@ -50,13 +50,14 @@
                                     <tr>
                                         <td>{{ $financeiro->nome }}</td>
                                         <td>{{ $financeiro->descricao }}</td>
-                                        <td class="fw-bold {{ $financeiro->tipo == 'PAGAR' ? 'text-danger' : 'text-success' }}">
+                                        <td
+                                            class="fw-bold {{ $financeiro->tipo == 'PAGAR' ? 'text-danger' : 'text-success' }}">
                                             R$ {{ number_format($financeiro->valor, 2, ',', '.') }}
                                         </td>
                                         <td>{{ \Carbon\Carbon::parse($financeiro->data_vencimento)->format('d/m/Y') }}</td>
                                         <td>{{ $financeiro->numero_parcelas }}</td>
                                         <td>
-                                            @if($financeiro->status == 'Pendente')
+                                            @if ($financeiro->status == 'Pendente')
                                                 <span class="badge bg-warning">{{ $financeiro->status }}</span>
                                             @elseif($financeiro->status == 'Pago')
                                                 <span class="badge bg-success">{{ $financeiro->status }}</span>
@@ -65,7 +66,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($financeiro->tipo == 'PAGAR')
+                                            @if ($financeiro->tipo == 'PAGAR')
                                                 <span class="badge bg-danger">{{ $financeiro->tipo }}</span>
                                             @else
                                                 <span class="badge bg-success">{{ $financeiro->tipo }}</span>
@@ -90,7 +91,7 @@
                         </table>
                     </div>
 
-                    @if($financeiros->hasPages())
+                    @if ($financeiros->hasPages())
                         <div class="mt-3">
                             {{ $financeiros->links('pagination::bootstrap-5') }}
                         </div>
@@ -122,15 +123,16 @@
                         </select>
 
                     </div>
-                    <div class="mb-3"><label class="form-label">Descrição</label><textarea name="descricao"
-                            class="form-control" rows="2" required></textarea></div>
+                    <div class="mb-3"><label class="form-label">Descrição</label>
+                        <textarea name="descricao" class="form-control" rows="2" required></textarea>
+                    </div>
 
                     <div class="row">
-                        <div class="col-4"><label class="form-label">Valor (R$)</label><input type="text" name="valor"
+                        <div class="col-6"><label class="form-label">Valor (R$)</label><input type="text" name="valor"
                                 class="form-control mask-valor" required></div>
-                        <div class="col-4"><label class="form-label">Vencimento</label><input type="date"
+                        <div class="col-6"><label class="form-label">Vencimento</label><input type="date"
                                 name="data_vencimento" class="form-control" required></div>
-                        <div class="col-4 ">
+                        <div class="col-6 mt-2">
                             <label for="status" class="form-label">Status</label>
                             <select name="status" class="form-select" required>
                                 <option value="Pendente" selected>Pendente</option>
@@ -140,15 +142,16 @@
                             </select>
                         </div>
                         {{-- Dentro do <div class="row g-3"> do formulário #pagar --}}
-                            <div class="col-md-4">
-                                <label class="form-label">Nº de Parcelas</label>
-                                <input type="number" name="numero_parcelas" class="form-control" value="1" min="1">
-                            </div>
+                        <div class="col-6 mt-2">
+                            <label class="form-label">Nº de Parcelas</label>
+                            <input type="number" name="numero_parcelas" class="form-control" value="1"
+                                min="1">
                         </div>
                     </div>
-                    <div class="modal-footer"><button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Cancelar</button><button type="submit"
-                            class="btn btn-primary">Salvar</button></div>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Cancelar</button><button type="submit"
+                        class="btn btn-primary">Salvar</button></div>
             </form>
         </div>
     </div>
@@ -175,14 +178,15 @@
                         </select>
 
                     </div>
-                    <div class="mb-3"><label class="form-label">Descrição</label><textarea name="descricao"
-                            class="form-control" rows="2" required></textarea></div>
+                    <div class="mb-3"><label class="form-label">Descrição</label>
+                        <textarea name="descricao" class="form-control" rows="2" required></textarea>
+                    </div>
                     <div class="row">
-                        <div class="col-4"><label class="form-label">Valor (R$)</label><input type="text" name="valor"
-                                class="form-control mask-valor" required></div>
-                        <div class="col-4"><label class="form-label">Vencimento</label><input type="date"
+                        <div class="col-6"><label class="form-label">Valor (R$)</label><input type="text"
+                                name="valor" class="form-control mask-valor" required></div>
+                        <div class="col-6"><label class="form-label">Vencimento</label><input type="date"
                                 name="data_vencimento" class="form-control" required></div>
-                        <div class="col-4 ">
+                        <div class="col-6 mt-2">
                             <label for="status" class="form-label">Status</label>
                             <select name="status" class="form-select" required>
                                 <option value="Pendente" selected>Pendente</option>
@@ -190,6 +194,11 @@
                                 <option value="Atrasado">Atrasado</option>
                                 <option value="Cancelado">Cancelado</option>
                             </select>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <label class="form-label">Nº de Parcelas</label>
+                            <input type="number" name="numero_parcelas" class="form-control" value="1"
+                                min="1">
                         </div>
                     </div>
 
@@ -209,8 +218,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('[name="valor"]').mask('#.##0,00', { reverse: true });
+        $(document).ready(function() {
+            $('[name="valor"]').mask('#.##0,00', {
+                reverse: true
+            });
 
             function inicializarSelect2(selector, data, placeholder) {
                 $(selector).select2({
@@ -220,9 +231,8 @@
                     tags: true,
                     allowClear: true,
                     data: data,
-                    dropdownParent: $(selector).closest('.modal').length
-                        ? $(selector).closest('.modal')
-                        : $('body'),
+                    dropdownParent: $(selector).closest('.modal').length ?
+                        $(selector).closest('.modal') : $('body'),
                     language: {
                         noResults: () => "Nenhuma categoria encontrada",
                         searching: () => "Buscando...",
@@ -231,12 +241,15 @@
             }
 
             const todasCategorias = @json($categorias);
-            const categoriasSelect = todasCategorias.map(c => ({ id: c.id, text: c.nome }));
+            const categoriasSelect = todasCategorias.map(c => ({
+                id: c.id,
+                text: c.nome
+            }));
 
             inicializarSelect2('.select2-pagar', categoriasSelect, 'Selecione ou crie uma categoria de despesa');
             inicializarSelect2('.select2-receber', categoriasSelect, 'Selecione ou crie uma categoria de receita');
 
-            $('.delete-btn').click(function () {
+            $('.delete-btn').click(function() {
                 var btn = $(this);
                 var route = btn.data('route');
 
@@ -255,9 +268,13 @@
                         $.ajax({
                             url: route,
                             type: 'POST',
-                            data: { _method: 'DELETE' },
-                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                            success: function (data) {
+                            data: {
+                                _method: 'DELETE'
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            success: function(data) {
 
                                 Swal.fire({
                                     title: 'Deletado!',
@@ -270,7 +287,7 @@
                                     }
                                 });
                             },
-                            error: function () {
+                            error: function() {
                                 Swal.fire('Erro!', 'Algo deu errado.', 'error');
                             }
                         });
