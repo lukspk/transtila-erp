@@ -191,6 +191,12 @@ class EntregaController extends Controller
                 'Dados:' => $dados
             ]);
 
+            $entrega = Entrega::where('chave_acesso', $dados['chave_acesso'])->first();
+
+            if (!empty($entrega)) {
+                return redirect()->back()->with('error', 'Já existe uma entrega com essa chave de acesso.');
+            }
+
             $dadosMotorista = [
                 'nome' => $dados['motorista']['nome'] ?? null,
                 'cpf' => $dados['motorista']['cpf'] ?? null,
