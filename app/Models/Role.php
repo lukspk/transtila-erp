@@ -14,7 +14,6 @@ class Role extends Model
 
     public function users()
     {
-        // O Laravel entende que a tabela de ligação é 'role_user' pela convenção de nomes.
         return $this->belongsToMany(User::class);
     }
 }
