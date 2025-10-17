@@ -29,4 +29,11 @@ class Entrega extends Model
         return $this->hasMany(ContaPagar::class);
     }
 
+    public function documentos()
+    {
+        return $this->hasMany(Documento::class);
+    }
+
+
+
 }

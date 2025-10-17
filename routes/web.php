@@ -56,7 +56,12 @@ Route::middleware('auth')->group(function () {
     });
 
 
-    Route::get('/t/{entregaHash}/{motoristaHash}', [CheckinController::class, 'showCheckinPage'])->name('checkin.show');
+
+
+    Route::get('/checkin/{id}/documento', [CheckinController::class, 'capturarDocumento'])->name('checkin.documento');
+    Route::post('/checkin/{id}/documento', [CheckinController::class, 'uploadDocumento'])->name('checkin.documento.upload');
+
+    Route::get('/checkin/{entregaHash}/{motoristaHash}', [CheckinController::class, 'showCheckinPage'])->name('checkin.show');
 
     Route::post('/checkin', [CheckinController::class, 'storeCheckin'])->name('checkin.store');
 
